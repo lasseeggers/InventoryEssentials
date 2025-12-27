@@ -1,6 +1,8 @@
 package net.blay09.mods.inventoryessentials.client;
 
+import net.blay09.mods.inventoryessentials.InventoryEssentialsConfig;
 import net.blay09.mods.inventoryessentials.InventoryUtils;
+import net.blay09.mods.inventoryessentials.SortOrder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,13 +18,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class ClientInventorySorting {
-
-    private static final Comparator<ItemStack> defaultComparator =
-            Comparator.comparing((ItemStack itemStack) -> itemStack.getHoverName().getString(), String.CASE_INSENSITIVE_ORDER)
-                    .thenComparing(Comparator.comparingInt(ItemStack::getCount).reversed())
-                    .thenComparing(itemStack -> itemStack.isEnchanted() ? 0 : 1)
-                    .thenComparingInt(ItemStack::getDamageValue)
-                    .thenComparing(itemStack -> Objects.toString(itemStack.getComponents(), ""));
 
     @FunctionalInterface
     public interface SlotClicker {
@@ -49,12 +44,15 @@ public class ClientInventorySorting {
         // Merge matching stacks first before sorting
         consolidateStacks(menu, slotsToSort, clicker);
 
-        // Compute the sorted order
+        // Get the configured sort order
+        final var sortOrder = InventoryEssentialsConfig.getActive().sortOrder;
+
+        // Compute the sorted order using the configured comparator
         final var goalSorting = slotsToSort.stream()
                 .map(Slot::getItem)
                 .map(ItemStack::copy)
                 .filter(stack -> !stack.isEmpty())
-                .sorted(defaultComparator)
+                .sorted(sortOrder.getComparator())
                 .toList();
 
         // Swap items to match the new sorting

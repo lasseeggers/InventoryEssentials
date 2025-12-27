@@ -30,5 +30,13 @@
   "inventoryessentials.configuration.enableBundleDrag": "Enable Bundle Drag",
   "inventoryessentials.configuration.enableBundleDrag.tooltip": "Should holding click or right-click with a bundle empty or insert hovered slots?",
   "inventoryessentials.configuration.enableMiddleClickSort": "Enable Middle Click Sort",
-  "inventoryessentials.configuration.enableMiddleClickSort.tooltip": "Should middle-clicking a slot sort the inventory?"
+  "inventoryessentials.configuration.enableMiddleClickSort.tooltip": "Should middle-clicking a slot sort the inventory?",
+  "inventoryessentials.configuration.sortOrder": "Sort Order",
+  "inventoryessentials.configuration.sortOrder.tooltip": "The order in which items should be sorted",
+  "inventoryessentials.configuration.sortOrder.alphabetic": "Alphabetic",
+  "inventoryessentials.configuration.sortOrder.itemId": "Item ID",
+  "inventoryessentials.configuration.sortOrder.creative": "Creative Menu Order",
+  "inventoryessentials.configuration.sortOrder.rarity": "Rarity (Epic to Common)",
+  "inventoryessentials.configuration.sortOrder.category": "Category (Creative Tab)",
+  "inventoryessentials.configuration.sortOrder.maxStackSize": "Max Stack Size"
 }

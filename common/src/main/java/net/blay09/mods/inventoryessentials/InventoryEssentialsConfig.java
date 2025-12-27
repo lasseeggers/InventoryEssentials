@@ -40,6 +40,9 @@ public class InventoryEssentialsConfig {
     @Comment("Should middle-clicking a slot sort the inventory?")
     public boolean enableMiddleClickSort = true;
 
+    @Comment("The order in which items should be sorted (alphabetic, itemId, creative, rarity, category, or maxStackSize)")
+    public SortOrder sortOrder = SortOrder.ALPHABETIC;
+
     public static InventoryEssentialsConfig getActive() {
         return Balm.config().getActiveConfig(InventoryEssentialsConfig.class);
     }
@@ -48,5 +51,3 @@ public class InventoryEssentialsConfig {
         Balm.config().registerConfig(InventoryEssentialsConfig.class);
     }
 }
-
-

@@ -44,4 +44,5 @@ plugins {
 }
 
 includeBuild('build-logic')
-include('common', 'fabric', 'neoforge', 'forge')
+// Temporarily exclude Forge due to macOS LWJGL native dependency issues
+include('common', 'fabric', 'neoforge') // , 'forge')
