@@ -33,21 +33,47 @@ public enum SortOrder implements StringRepresentable {
         if (b.isEmpty())
             return -1;
 
-        java.util.List<ItemStack> displayItems = CreativeModeTabs.searchTab().getDisplayItems().stream().toList();
+        // Get creative tab display items - convert to list for indexOf support
+        java.util.Collection<ItemStack> displayItemsCollection = CreativeModeTabs.searchTab().getDisplayItems();
+        java.util.List<ItemStack> displayItems;
+        if (displayItemsCollection instanceof java.util.List) {
+            displayItems = (java.util.List<ItemStack>) displayItemsCollection;
+        } else {
+            displayItems = new java.util.ArrayList<>(displayItemsCollection);
+        }
+
+        // Find index using a predicate that matches by item type
         int indexA = -1;
         int indexB = -1;
-        int i = 0;
-
-        for (ItemStack displayItem : displayItems) {
+        for (int i = 0; i < displayItems.size(); i++) {
+            ItemStack displayItem = displayItems.get(i);
             if (indexA == -1 && ItemStack.isSameItem(a, displayItem)) {
                 indexA = i;
             }
             if (indexB == -1 && ItemStack.isSameItem(b, displayItem)) {
                 indexB = i;
             }
-            if (indexA != -1 && indexB != -1)
+            if (indexA != -1 && indexB != -1) {
                 break;
-            i++;
+            }
+        }
+
+        // If not found with exact match, try matching just by item type (for modded/enchanted items)
+        if (indexA == -1) {
+            for (int i = 0; i < displayItems.size(); i++) {
+                if (displayItems.get(i).getItem() == a.getItem()) {
+                    indexA = i;
+                    break;
+                }
+            }
+        }
+        if (indexB == -1) {
+            for (int i = 0; i < displayItems.size(); i++) {
+                if (displayItems.get(i).getItem() == b.getItem()) {
+                    indexB = i;
+                    break;
+                }
+            }
         }
 
         // Items not in creative menu go to the end
@@ -60,7 +86,12 @@ public enum SortOrder implements StringRepresentable {
         if (cmp != 0)
             return cmp;
 
-    // Secondary sort by count (descending), enchantment, damage, components
+        // Secondary sort by display name (alphabetic) for items at same position
+        cmp = a.getHoverName().getString().compareToIgnoreCase(b.getHoverName().getString());
+        if (cmp != 0)
+            return cmp;
+
+        // Tertiary sort by count (descending), enchantment, damage, components
         cmp = Integer.compare(b.getCount(), a.getCount());
         if (cmp != 0)
             return cmp;
