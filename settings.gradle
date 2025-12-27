@@ -43,4 +43,5 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }
 
-include('common', 'neoforge', 'fabric', 'forge')
+// Temporarily exclude Forge due to macOS LWJGL native dependency issues
+include('common', 'neoforge', 'fabric') // , 'forge'
